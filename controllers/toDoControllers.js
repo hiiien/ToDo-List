@@ -5,10 +5,10 @@ import { getToDos, createToDo, updateToDo, deleteToDo } from "../models/toDoMode
 export const listToDos = async (req, res) => {
     try {
         const toDos = await getToDos();
-        res.send(toDos);
-        // res.render("index.ejs", {
-        // toDos: toDos
-        // });
+        // res.send(toDos);
+        res.render("index.ejs", {
+        toDos: toDos
+        });
     } catch (error) {
         console.log(`Failed to list toDos ${error}`);
     };
