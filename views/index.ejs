@@ -7,10 +7,65 @@
     <title>ToDo List</title>
 </head>
 <body>
+    <div class="heading">
+        <h1>Today's ToDos</h1>
+    </div>
+    <div class="note-pad">
+        <div id="add-to-do" class="note"></div>
+            <form action="/todos" method="post">
+                <input type="text" name="content" placeholder="Enter a new item.." autocomplete="off" autofocus="true" required>
+                <button action="submit"><img class="icon" src="/assets/noun-hand-drawn-plus-698168.svg" alt=""></button>
+            </form>
+        </div>
+        <% for(let toDo of toDos){ %>
+        
+        <div class="note">
+            <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p>
+            <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt=""></button>
+            <form id="edit-form" onsubmit="submittedEditForm(event, '<%= toDo.id %>')">
+                <input type="hidden" name="id" value="<%=  toDo.id %>">
+                <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
+                <button type="submit" id="submit-edit-<%= toDo.id %>"></button>
+            </form>
+            <form action="">
+                
+            </form>
+        </div>
+        <% }%>
+    </div>
 
 
+    <script>
+        function showEditForm(id){
+            document.getElementById("edit-" + id).setAttribute("hidden", true);
+            document.getElementById("todo-content-" + id).setAttribute("hidden", true);
+            document.getElementById("todo-input-" + id).removeAttribute("hidden");
+            document.getElementById("submit-edit-" + id).removeAttribute("hidden");
+        }
 
+        async function submittedEditForm(event, id){
+            event.preventDefault();
+            const content = document.getElementById("todo-input-" + id).value;
 
-    <script src="/js/todos.js"></script>
+            try {
+                const response = await fetch('/todos/' + id, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({content : content})
+                });
+                if (response.ok) {
+            
+                console.log('ToDo updated successfully');
+                } else {
+                console.error('Failed to update ToDo');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+    </script>
 </body>
 </html>

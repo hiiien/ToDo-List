@@ -25,9 +25,11 @@ app.use('/todos', toDoRoutes);
 
 
 app.get('/', (req, res) => {
-  listToDos()
-    .then((todos) => res.render('index.ejs', { todos }))
-    .catch((err) => res.status(500).json({ message: 'Error fetching todos', error: err }));
+  try {
+    res.redirect("/todos");
+  } catch (error) {
+    
+  }
 });
 
 
