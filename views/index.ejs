@@ -21,11 +21,11 @@
         
         <div class="note">
             <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p>
-            <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt=""></button>
+            <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon"></button>
             <form id="edit-form" onsubmit="submittedEditForm(event, '<%= toDo.id %>')">
                 <input type="hidden" name="id" value="<%=  toDo.id %>">
                 <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
-                <button type="submit" id="submit-edit-<%= toDo.id %>"></button>
+                <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon"></button>
             </form>
             <form action="">
                 
@@ -41,6 +41,13 @@
             document.getElementById("todo-content-" + id).setAttribute("hidden", true);
             document.getElementById("todo-input-" + id).removeAttribute("hidden");
             document.getElementById("submit-edit-" + id).removeAttribute("hidden");
+        }
+
+        function hideEditForm(id){
+            document.getElementById("edit-" + id).removeAttribute("hidden");
+            document.getElementById("todo-content-" + id).removeAttribute("hidden");
+            document.getElementById("todo-input-" + id).setAttribute("hidden", true);
+            document.getElementById("submit-edit-" + id).setAttribute("hidden", true);
         }
 
         async function submittedEditForm(event, id){

@@ -22,7 +22,7 @@ await pool.query(query);
 };
 
 export const getToDos = async () => {
-    const result = await pool.query(`SELECT * FROM toDos;`);
+    const result = await pool.query(`SELECT * FROM toDos ORDER BY id ASC;`);
     return result.rows;
 };
 
