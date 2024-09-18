@@ -21,14 +21,14 @@
         
         <div class="note">
             <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p>
-            <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon"></button>
+            <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button"></button>
             <form id="edit-form" onsubmit="submittedEditForm(event, '<%= toDo.id %>')">
                 <input type="hidden" name="id" value="<%=  toDo.id %>">
                 <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
-                <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon"></button>
+                <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon for submit changes"></button>
             </form>
-            <form action="">
-                
+            <form id="delete-form" onsubmit="deleteToDo(event, ' <%= toDo.id %>')">
+                <button type="submit" id="delete-todo-<%= toDo.id %>"><img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete todo"></button>
             </form>
         </div>
         <% }%>
@@ -41,6 +41,7 @@
             document.getElementById("todo-content-" + id).setAttribute("hidden", true);
             document.getElementById("todo-input-" + id).removeAttribute("hidden");
             document.getElementById("submit-edit-" + id).removeAttribute("hidden");
+            document.getElementById("todo-input-" + id).focus();
         }
 
         function hideEditForm(id){
@@ -67,6 +68,23 @@
                 console.log('ToDo updated successfully');
                 } else {
                 console.error('Failed to update ToDo');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteToDo(event, id){
+            event.preventDefault();
+            try {
+                const response = await fetch('/todos/' + id, {
+                    method: 'DELETE'
+                })
+
+                if (response.ok) {
+                    console.log('ToDo updated successfully');
+                } else {
+                    console.error('Failed to update ToDo');
                 }
             } catch (error) {
                 console.error('Error:', error);

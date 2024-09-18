@@ -4,7 +4,6 @@ import path from 'path';
 import { createToDoTable } from './models/toDoModels.js';
 import { fileURLToPath } from 'url';
 import toDoRoutes from './routes/toDoRoutes.js'
-import { listToDos } from './controllers/toDoControllers.js';
 const app = express();
 const port = 3000;
 
