@@ -1,12 +1,13 @@
 import pkg from "pg";
+import { config } from 'dotenv';
+config({ path: './.env' });
 const { Pool } = pkg;
 
-
 const pool = new Pool({
-    user: "postgres",
+    user: process.env.DB_USER,
     host: "localhost",
     database: "toDoList",
-    password: "D99kgQP4ZJ11Ha4BB^@V",
+    password: process.env.DB_PASSWORD,
     port: 5432,
 });
 

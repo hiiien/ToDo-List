@@ -10,6 +10,7 @@
     <div class="heading">
         <h1>Today's ToDos</h1>
     </div>
+    <!-- form to add new todos -->
     <div class="note-pad">
         <div id="add-to-do" class="note"></div>
             <form action="/todos" method="post">
@@ -19,14 +20,18 @@
         </div>
         <% for(let toDo of toDos){ %>
         
+
+        <!-- Note card for each todo -->
         <div class="note" id="note-id-<%= toDo.id %>">
-            <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p>
+            <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p> <!-- Regular content-->
             <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button"></button>
+            <!-- edit form which allows for edited to dos and updates DOM -->
             <form id="edit-form" onsubmit="submitEditForm(event, '<%= toDo.id %>')">
                 <input type="hidden" name="id" value="<%=  toDo.id %>">
                 <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
                 <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon for submit changes"></button>
             </form>
+            <!-- delete form which can delete to dos and updates the DOM -->
             <form id="delete-form" onsubmit="deleteToDo(event, '<%= toDo.id %>')">
                 <button type="submit" id="delete-todo-<%= toDo.id %>"><img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete todo"></button>
             </form>
@@ -36,6 +41,8 @@
 
 
     <script>
+
+        //hides the the todo and opens the edit form
         function showEditForm(id){
             document.getElementById("edit-" + id).setAttribute("hidden", true);
             document.getElementById("todo-content-" + id).setAttribute("hidden", true);
@@ -44,6 +51,7 @@
             document.getElementById("todo-input-" + id).focus();
         }
 
+        //hides the edit form when edits are done and displays the regular todo
         function hideEditForm(id){
             document.getElementById("edit-" + id).removeAttribute("hidden");
             document.getElementById("todo-content-" + id).removeAttribute("hidden");
@@ -51,12 +59,16 @@
             document.getElementById("submit-edit-" + id).setAttribute("hidden", true);
         }
 
+        //removes all children of deleted note on the client side
         function removeChildren(element){
             while(element.firstChild){
                 element.removeChild(element.firstChild);
             }
         }
 
+
+        //catches the submit from the edit form and sends it to the backend with the correct patch HTTP request
+        //while updating the client DOM so the edits appear without a reload
         async function submitEditForm(event, id){
             event.preventDefault();
             const content = document.getElementById("todo-input-" + id).value;
@@ -80,6 +92,8 @@
             }
         }
 
+        //catches the submit from the delete form and sends it to the backend with the correct DELETE HTTP request
+        //while updating the client DOM so the deleted item is deleted without a reload
         async function deleteToDo(event, id){
             event.preventDefault();
             const element = document.getElementById("note-id-" + id);

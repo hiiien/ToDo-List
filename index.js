@@ -7,6 +7,8 @@ import toDoRoutes from './routes/toDoRoutes.js'
 const app = express();
 const port = 3000;
 
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -22,15 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/todos', toDoRoutes);
 
-
-app.get('/', (req, res) => {
-  try {
-    res.redirect("/todos");
-  } catch (error) {
-    
-  }
+app.get("/", (req, res) => {
+  res.redirect("/todos");
 });
-
 
 
 createToDoTable()
