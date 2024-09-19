@@ -19,15 +19,15 @@
         </div>
         <% for(let toDo of toDos){ %>
         
-        <div class="note">
+        <div class="note" id="note-id-<%= toDo.id %>">
             <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p>
             <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button"></button>
-            <form id="edit-form" onsubmit="submittedEditForm(event, '<%= toDo.id %>')">
+            <form id="edit-form" onsubmit="submitEditForm(event, '<%= toDo.id %>')">
                 <input type="hidden" name="id" value="<%=  toDo.id %>">
                 <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
                 <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon for submit changes"></button>
             </form>
-            <form id="delete-form" onsubmit="deleteToDo(event, ' <%= toDo.id %>')">
+            <form id="delete-form" onsubmit="deleteToDo(event, '<%= toDo.id %>')">
                 <button type="submit" id="delete-todo-<%= toDo.id %>"><img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete todo"></button>
             </form>
         </div>
@@ -51,10 +51,16 @@
             document.getElementById("submit-edit-" + id).setAttribute("hidden", true);
         }
 
-        async function submittedEditForm(event, id){
+        function removeChildren(element){
+            while(element.firstChild){
+                element.removeChild(element.firstChild);
+            }
+        }
+
+        async function submitEditForm(event, id){
             event.preventDefault();
             const content = document.getElementById("todo-input-" + id).value;
-
+            document.getElementById("todo-content-" + id).innerHTML = content;
             try {
                 const response = await fetch('/todos/' + id, {
                     method: 'PATCH',
@@ -76,6 +82,9 @@
 
         async function deleteToDo(event, id){
             event.preventDefault();
+            const element = document.getElementById("note-id-" + id);
+            removeChildren(element);
+            element.remove();
             try {
                 const response = await fetch('/todos/' + id, {
                     method: 'DELETE'
