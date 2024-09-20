@@ -12,7 +12,7 @@
     </div>
     <!-- form to add new todos -->
     <div class="note-pad">
-        <div id="add-todo" class="note"></div>
+        <div id="add-todo" ></div>
             <form onsubmit="addToDo(event)">
                 <input id="new-todo-content" type="text" name="content" placeholder="Enter a new item.." autocomplete="off" autofocus="true" required>
                 <button action="submit"><img class="icon" src="/assets/noun-hand-drawn-plus-698168.svg" alt=""></button>
@@ -26,8 +26,14 @@
 
             <!-- Note card for each todo -->
             <div class="note" id="note-id-<%= toDo.id %>">
-                <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p> <!-- Regular content-->
-                <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button"></button>
+                <div class="to-do-content">
+                    <p id="todo-content-<%= toDo.id %>"> <%= toDo.content %></p> <!-- Regular content-->
+                    <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')"><img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button"></button>
+                
+                    <form id="delete-form" onsubmit="deleteToDo(event, '<%= toDo.id %>')">
+                        <button type="submit" id="delete-todo-<%= toDo.id %>"><img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete todo"></button>
+                    </form>
+                </div>
                 <!-- edit form which allows for edited to dos and updates DOM -->
                 <form id="edit-form" onsubmit="submitEditForm(event, '<%= toDo.id %>')">
                     <input type="hidden" name="id" value="<%=  toDo.id %>">
@@ -35,9 +41,7 @@
                     <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')"><img class="icon" src="/assets/check-solid.svg" alt="checkmark icon for submit changes"></button>
                 </form>
                 <!-- delete form which can delete to dos and updates the DOM -->
-                <form id="delete-form" onsubmit="deleteToDo(event, '<%= toDo.id %>')">
-                    <button type="submit" id="delete-todo-<%= toDo.id %>"><img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete todo"></button>
-                </form>
+                
             </div>
         <% }%>
         </div>
@@ -98,18 +102,25 @@
             }
         }
 
+        //displays the new todo in the DOM matching the backend changes
         function showNewToDo(toDo){
-            const toDoListContainer = document.getElementById("todo-list");
-            const toDoElement = document.createElement('div');
+            const toDoListContainer = document.getElementById("todo-list"); //gets the todo-list div
+            const toDoElement = document.createElement('div'); //the next lines make a new toDo matching the format of the old ones
             toDoElement.className = 'note';
             toDoElement.id = `note-id-${toDo.id}`
             console.log(toDo);
             toDoElement.innerHTML = 
-                `
-                <p id="todo-content-${toDo.id}">${toDo.content}</p> <!-- Regular content-->
-                <button id="edit-${toDo.id}" onclick="showEditForm('${toDo.id}')">
-                    <img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button">
-                </button>
+                `<div class="to-do-content">
+                    <p id="todo-content-${toDo.id}">${toDo.content}</p> <!-- Regular content-->
+                    <button id="edit-${toDo.id}" onclick="showEditForm('${toDo.id}')">
+                        <img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button">
+                    </button>
+                    <form id="delete-form-${toDo.id}" onsubmit="deleteToDo(event, '${toDo.id}')">
+                        <button type="submit" id="delete-todo-${toDo.id}">
+                            <img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete to-do">
+                        </button>
+                    </form>
+                </div>
                 <form id="edit-form-${toDo.id}" onsubmit="submitEditForm(event, '${toDo.id}')">
                     <input type="hidden" name="id" value="${toDo.id}">
                     <input id="todo-input-${toDo.id}" type="text" name="content" value="${toDo.content}" hidden="true" autofocus="true">
@@ -117,14 +128,12 @@
                         <img class="icon" src="/assets/check-solid.svg" alt="checkmark icon for submit changes">
                     </button>
                 </form>
-                <form id="delete-form-${toDo.id}" onsubmit="deleteToDo(event, '${toDo.id}')">
-                    <button type="submit" id="delete-todo-${toDo.id}">
-                        <img class="icon" src="/assets/trash-can.svg" alt="trash-can icon for delete to-do">
-                    </button>
-                </form>
+                
                 `
+            //this inserts the new to do before the old first 
+            //child to match the order they are normally displayed
+            toDoListContainer.insertBefore(toDoElement, toDoListContainer.firstChild); 
             
-            toDoListContainer.insertBefore(toDoElement, toDoListContainer.firstChild);
 
         }
 
