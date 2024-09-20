@@ -27,12 +27,13 @@ export const getToDos = async () => {
     return result.rows;
 };
 
+
 export const createToDo = async (toDo) => {
     const content = toDo;
     const time = new Date();
 
     const result = await pool.query(
-        `INSERT INTO toDos (content, time) VALUES ($1, $2)`,
+        `INSERT INTO toDos (content, time) VALUES ($1, $2) RETURNING id, content, time`,
         [content, time]
     );
 

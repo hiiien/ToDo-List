@@ -18,9 +18,9 @@ export const listToDos = async (req, res) => {
 export const addToDo = async (req, res) => {
     try {
         const content = req.body.content;
-        await createToDo(content);
+        const newToDo = await createToDo(content);
         console.log("toDo added Successfully");
-        await listToDos(req, res);
+        res.json({ toDo: newToDo});
     } catch (error) {
         console.log(`Failed to add new toDo: ${error}`);
         res.status(500).send("Error adding toDo");
