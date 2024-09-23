@@ -20,7 +20,7 @@ export const addToDo = async (req, res) => {
         const content = req.body.content;
         const newToDo = await createToDo(content);
         console.log("toDo added Successfully");
-        res.json({ toDo: newToDo});
+        res.json({ toDo: newToDo}).status(200);
     } catch (error) {
         console.log(`Failed to add new toDo: ${error}`);
         res.status(500).send("Error adding toDo");
@@ -33,7 +33,7 @@ export const changeToDo = async (req, res) => {
         const content = req.body.content;
         await updateToDo(id, content);
         console.log("toDo succesfully updated");
-        await listToDos(req, res);
+        res.status(200);
     } catch (error) {
         console.log(`failed to update toDo: ${error}`);
         res.status(500).send("Error updating toDo");
@@ -45,7 +45,7 @@ export const removeToDo = async (req, res) => {
         const id = req.params.id * 1;
         await deleteToDo(id);
         console.log("ToDo deleted succesfully");
-        await listToDos(req, res);
+        res.status(200);
     } catch (error) {
         console.log(`failed to delete toDo: ${error}`);
         res.status(500).send("Error deleting toDo");

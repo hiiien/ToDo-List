@@ -52,3 +52,5 @@ button{
   border: none;
   background: none; 
 }
+
+/* add class to edit and delete and put them as align self flex-end */

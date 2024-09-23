@@ -33,7 +33,7 @@ export const createToDo = async (toDo) => {
     const time = new Date();
 
     const result = await pool.query(
-        `INSERT INTO toDos (content, time) VALUES ($1, $2) RETURNING id, content, time`,
+        `INSERT INTO toDos (content, time) VALUES ($1, $2) RETURNING id, content, time;`,
         [content, time]
     );
 
@@ -43,15 +43,15 @@ export const createToDo = async (toDo) => {
 export const updateToDo = async (id, updatedToDo) => {
     const content = updatedToDo;
     const result = await pool.query(
-        'UPDATE toDos SET content = $1 WHERE id = $2',
+        'UPDATE toDos SET content = $1 WHERE id = $2;',
         [content, id]
     );
-    return result.rows[0];
+    return result.rows[0];  
 };
 
 export const deleteToDo = async (id) => {
     const result = await pool.query(
-        'DELETE FROM toDos WHERE id = $1',
+        'DELETE FROM toDos WHERE id = $1;',
         [id]
     );
     return result.rows[0];
