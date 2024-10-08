@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/styles.css">
+    
     <title>ToDo List</title>
 </head>
 <body>
-    <div class="heading">
+    <div class="heading note">
         <h1>Today's ToDos</h1>
     </div>
     <!-- form to add new todos -->
     <div class="note-pad">
-        <div id="add-todo" ></div>
+        <div id="add-todo" class="note">
             <form onsubmit="addToDo(event)">
                 <input id="new-todo-content" type="text" name="content" placeholder="Enter a new item.." autocomplete="off" autofocus="true" required>
                 <button type="submit"><img class="icon" src="/assets/noun-hand-drawn-plus-698168.svg" alt=""></button>
@@ -31,7 +32,7 @@
                     <button id="edit-<%= toDo.id %>" onclick="showEditForm('<%=toDo.id %>')">
                         <img class="icon" src="/assets/pencil-solid.svg" alt="pencil icon for edit button">
                     </button>
-                    <form id="edit-form" onsubmit="submitEditForm(event, '<%= toDo.id %>')"></form>
+                    <form id="edit-form-<%= toDo.id %>" onsubmit="submitEditForm(event, '<%= toDo.id %>')">
                         <input type="hidden" name="id" value="<%=  toDo.id %>">
                         <input id="todo-input-<%=  toDo.id %>" type="text" name="content" value="<%= toDo.content %>" hidden="true" autofocus="true">
                         <button type="submit" id="submit-edit-<%= toDo.id %>" hidden="true" onclick="hideEditForm('<%= toDo.id %>')">
@@ -176,7 +177,9 @@
             event.preventDefault();
             const element = document.getElementById("note-id-" + id);
             removeChildren(element);
-            element.remove();
+            if(element){
+                element.remove();
+            }
             try {
                 const response = await fetch('/todos/' + id, {
                     method: 'DELETE'

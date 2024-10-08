@@ -56,3 +56,4 @@ export const deleteToDo = async (id) => {
     );
     return result.rows[0];
 };
+

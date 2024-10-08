@@ -7,6 +7,9 @@
 html, body {
   height: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 body {
@@ -21,11 +24,7 @@ body {
   width: 20px;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 
 .to-do-content{
   display: flex;
